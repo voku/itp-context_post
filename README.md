@@ -51,18 +51,18 @@ https://voku.github.io/itp-context_post/
 
 If you fork or rename the repository, update both:
 
-- `/home/runner/work/itp-context_post/itp-context_post/vite.config.ts`
-- `/home/runner/work/itp-context_post/itp-context_post/index.html`
+- `vite.config.ts`
+- `index.html`
 
 ## Key files
 
-- `/home/runner/work/itp-context_post/itp-context_post/src/App.tsx` — top-level app shell and view switching
-- `/home/runner/work/itp-context_post/itp-context_post/src/components/ConfluenceView.tsx` — stale documentation experience
-- `/home/runner/work/itp-context_post/itp-context_post/src/components/ContextView.tsx` — living architecture/code context experience
-- `/home/runner/work/itp-context_post/itp-context_post/src/components/BlogPostContent.tsx` — article-style content inside the Confluence mock
-- `/home/runner/work/itp-context_post/itp-context_post/index.html` — favicon, SEO, Open Graph, and social preview metadata
-- `/home/runner/work/itp-context_post/itp-context_post/vite.config.ts` — Vite setup, aliases, and GitHub Pages base path
-- `/home/runner/work/itp-context_post/itp-context_post/.github/workflows/deploy-pages.yml` — automated Pages deployment workflow
+- `src/App.tsx` — top-level app shell and view switching
+- `src/components/ConfluenceView.tsx` — stale documentation experience
+- `src/components/ContextView.tsx` — living architecture/code context experience
+- `src/components/BlogPostContent.tsx` — article-style content inside the Confluence mock
+- `index.html` — favicon, SEO, Open Graph, and social preview metadata
+- `vite.config.ts` — Vite setup, aliases, and GitHub Pages base path
+- `.github/workflows/deploy-pages.yml` — automated Pages deployment workflow
 
 ## Key Files Detector helper prompt
 
