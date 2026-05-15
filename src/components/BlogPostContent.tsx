@@ -50,14 +50,14 @@ public function charge(int $amount) {'{'}
         By isolating external APIs, we can swap out our HTTP client (e.g., from Guzzle to Symfony HttpClient) without touching the domain. It also makes our tests significantly faster since we can mock the adapter interface.
       </p>
 
-      <div className="mt-12 p-5 bg-[#FAFBFC] rounded-lg border border-[#DFE1E6] flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm">
+      <div className="mt-12 flex flex-col items-start justify-between gap-4 rounded-lg border border-[#DFE1E6] bg-[#FAFBFC] p-5 shadow-sm md:flex-row md:items-center">
         <div className="text-sm text-[#172B4D]">
           <span className="font-semibold block mb-1">Tired of reading stale documentation?</span> 
           See how this architecture rule looks when it is directly attached to the codebase.
         </div>
         <button 
           onClick={onSwitch} 
-          className="text-sm font-semibold whitespace-nowrap bg-[#0052CC] text-white px-5 py-2.5 rounded hover:bg-[#0047B3] transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-[#0052CC] border-none shadow-sm"
+          className="w-full rounded bg-[#0052CC] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#0047B3] focus:ring-2 focus:ring-[#0052CC] focus:ring-offset-2 border-none sm:w-auto whitespace-nowrap"
         >
           View Living Architecture
         </button>
