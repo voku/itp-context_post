@@ -253,7 +253,7 @@ export function ContextView({ onFeedback }: ContextViewProps) {
                 animate={{ y: 0 }}
                 exit={{ y: '100%' }}
                 transition={{ duration: 0.22 }}
-                className="fixed inset-x-0 bottom-40 z-40 max-h-[calc(100dvh-10rem)] sm:bottom-44 sm:max-h-[calc(100dvh-11rem)] md:bottom-48 md:max-h-[calc(100dvh-12rem)] xl:hidden"
+                className="fixed inset-x-0 bottom-40 z-40 max-h-[calc(100vh-10rem)] max-h-[calc(100dvh-10rem)] sm:bottom-44 sm:max-h-[calc(100vh-11rem)] sm:max-h-[calc(100dvh-11rem)] md:bottom-48 md:max-h-[calc(100vh-12rem)] md:max-h-[calc(100dvh-12rem)] xl:hidden"
               >
                 <div className="mx-auto flex max-h-full w-full max-w-2xl flex-col overflow-hidden rounded-t-2xl border border-gray-700/60 bg-[#161b22] shadow-2xl">
                   <ContextDetailsPanel activeRule={activeRule} onClose={() => setActiveRule(null)} />
@@ -315,8 +315,8 @@ export function ContextView({ onFeedback }: ContextViewProps) {
           </div>
         </div>
         <div className="flex-1 overflow-y-auto p-4 font-mono text-xs">
-          {footerDetails.lines.map((line) => (
-            <div key={line.text} className={`${line.className} mb-1`}>
+          {footerDetails.lines.map((line, index) => (
+            <div key={`${footerTab}-${index}`} className={`${line.className} mb-1`}>
               {line.text}
             </div>
           ))}
