@@ -246,16 +246,16 @@ export function ContextView({ onFeedback }: ContextViewProps) {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setActiveRule(null)}
-                className="fixed inset-0 z-30 bg-black/50 xl:hidden"
+                className="fixed inset-x-0 top-0 bottom-40 z-30 bg-black/50 sm:bottom-44 md:bottom-48 xl:hidden"
               />
               <motion.div
                 initial={{ y: '100%' }}
                 animate={{ y: 0 }}
                 exit={{ y: '100%' }}
                 transition={{ duration: 0.22 }}
-                className="fixed inset-x-0 bottom-0 z-40 max-h-[70vh] xl:hidden"
+                className="fixed inset-x-0 bottom-40 z-40 max-h-[calc(100dvh-10rem)] sm:bottom-44 sm:max-h-[calc(100dvh-11rem)] md:bottom-48 md:max-h-[calc(100dvh-12rem)] xl:hidden"
               >
-                <div className="mx-auto flex max-h-[70vh] w-full max-w-2xl flex-col overflow-hidden rounded-t-2xl border border-gray-700/60 bg-[#161b22] shadow-2xl">
+                <div className="mx-auto flex max-h-full w-full max-w-2xl flex-col overflow-hidden rounded-t-2xl border border-gray-700/60 bg-[#161b22] shadow-2xl">
                   <ContextDetailsPanel activeRule={activeRule} onClose={() => setActiveRule(null)} />
                 </div>
               </motion.div>
