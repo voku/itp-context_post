@@ -173,7 +173,7 @@ export function ContextView({ onFeedback }: ContextViewProps) {
               onClick={() =>
                 activeRule
                   ? setActiveRule(null)
-                  : onFeedback?.('Resolve a rule first', 'Tap the highlighted #[Rule(...)] attribute to open the context panel.', 'info')
+                  : onFeedback?.('Resolve a rule first', 'Select the highlighted #[Rule(...)] attribute to open the context panel.', 'info')
               }
               className="rounded-md border border-gray-700/70 px-3 py-1.5 text-xs font-medium text-gray-200 transition hover:bg-[#161b22]"
             >
