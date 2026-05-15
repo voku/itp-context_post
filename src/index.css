@@ -4,22 +4,3 @@
   min-height: 100vh;
   min-height: 100dvh;
 }
-
-.max-safe-context-panel {
-  max-height: calc(100vh - 10rem);
-  max-height: calc(100dvh - 10rem);
-}
-
-@media (min-width: 640px) {
-  .max-safe-context-panel {
-    max-height: calc(100vh - 11rem);
-    max-height: calc(100dvh - 11rem);
-  }
-}
-
-@media (min-width: 768px) {
-  .max-safe-context-panel {
-    max-height: calc(100vh - 12rem);
-    max-height: calc(100dvh - 12rem);
-  }
-}
