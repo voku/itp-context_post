@@ -45,7 +45,7 @@ export default function App() {
   }, [feedback]);
 
   return (
-    <div className="flex min-h-screen min-h-dvh w-full flex-col overflow-hidden bg-[#0e1117] font-sans text-gray-900">
+    <div className="min-safe-screen flex w-full flex-col overflow-hidden bg-[#0e1117] font-sans text-gray-900">
       {/* Global Header */}
       <header className="z-20 flex shrink-0 flex-col gap-3 border-b border-gray-700/50 bg-[#161b22] px-4 py-3 md:h-14 md:flex-row md:items-center md:justify-between md:py-0">
         <div className="min-w-0">

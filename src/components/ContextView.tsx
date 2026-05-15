@@ -253,7 +253,7 @@ export function ContextView({ onFeedback }: ContextViewProps) {
                 animate={{ y: 0 }}
                 exit={{ y: '100%' }}
                 transition={{ duration: 0.22 }}
-                className="fixed inset-x-0 bottom-40 z-40 max-h-[calc(100vh-10rem)] max-h-[calc(100dvh-10rem)] sm:bottom-44 sm:max-h-[calc(100vh-11rem)] sm:max-h-[calc(100dvh-11rem)] md:bottom-48 md:max-h-[calc(100vh-12rem)] md:max-h-[calc(100dvh-12rem)] xl:hidden"
+                className="max-safe-context-panel fixed inset-x-0 bottom-40 z-40 sm:bottom-44 md:bottom-48 xl:hidden"
               >
                 <div className="mx-auto flex max-h-full w-full max-w-2xl flex-col overflow-hidden rounded-t-2xl border border-gray-700/60 bg-[#161b22] shadow-2xl">
                   <ContextDetailsPanel activeRule={activeRule} onClose={() => setActiveRule(null)} />
@@ -356,7 +356,7 @@ function ContextDetailsPanel({
         </div>
 
         <div className="group relative overflow-hidden rounded-lg border border-[#30363d] bg-[#0d1117] p-4 shadow-sm">
-          <div className="absolute -mr-8 -mt-8 right-0 top-0 h-16 w-16 rounded-full bg-blue-500/10 blur-xl transition-all group-hover:bg-blue-500/20" />
+          <div className="absolute right-0 top-0 -mr-8 -mt-8 h-16 w-16 rounded-full bg-blue-500/10 blur-xl transition-all group-hover:bg-blue-500/20" />
           <div className="mb-2 text-xs font-semibold uppercase tracking-widest text-gray-500">Statement</div>
           <p className="text-sm leading-snug text-gray-200">
             Keep external API communication behind adapter boundaries.
