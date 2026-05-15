@@ -329,13 +329,15 @@ function Tree({ node, depth, activeFile, onSelect }: { node: FileNode, depth: nu
       return null;
     }
 
+    const contentKey = node.contentKey;
+
     return (
       <div 
-        onClick={() => onSelect(node.contentKey)}
-        className={`flex items-center gap-1.5 px-2 py-1 cursor-pointer transition-colors ${activeFile === node.contentKey ? 'bg-[#1f6feb]/20 text-[#a5d6ff]' : 'text-gray-400 hover:bg-[#161b22] hover:text-gray-300'}`}
+        onClick={() => onSelect(contentKey)}
+        className={`flex items-center gap-1.5 px-2 py-1 cursor-pointer transition-colors ${activeFile === contentKey ? 'bg-[#1f6feb]/20 text-[#a5d6ff]' : 'text-gray-400 hover:bg-[#161b22] hover:text-gray-300'}`}
         style={{ paddingLeft: `${depth * 12 + 12}px` }}
       >
-        <FileCode2 className={`w-3.5 h-3.5 ${activeFile === node.contentKey ? 'text-[#a5d6ff]' : 'text-gray-500'}`} />
+        <FileCode2 className={`w-3.5 h-3.5 ${activeFile === contentKey ? 'text-[#a5d6ff]' : 'text-gray-500'}`} />
         <span className="text-sm truncate">{node.name}</span>
       </div>
     )
