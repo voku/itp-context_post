@@ -166,7 +166,7 @@ export function ConfluenceView({ onSwitch, onFeedback }: ConfluenceViewProps) {
                 </div>
               </div>
 
-              <div className="ml-0 flex gap-4 sm:ml-12">
+              <div className="flex gap-4 sm:ml-12">
                 <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-700 shrink-0 mt-1 flex items-center justify-center text-sm font-semibold">SA</div>
                 <div>
                   <div className="flex items-baseline gap-2">

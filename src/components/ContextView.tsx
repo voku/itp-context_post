@@ -1,5 +1,5 @@
 import { Fragment, useMemo, useState } from 'react';
-import { FileCode2, Play, Shield, Terminal, Folder, ChevronDown, AlertCircle, PanelLeftOpen, X, Search } from 'lucide-react';
+import { FileCode2, Play, Shield, Terminal, Folder, ChevronDown, AlertCircle, PanelLeftOpen, X, Info } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 type FileNode = {
@@ -294,22 +294,22 @@ export function ContextView({ onFeedback }: ContextViewProps) {
             </button>
           ))}
 
-          <button
-            type="button"
-            onClick={() =>
-              onFeedback?.(
+            <button
+              type="button"
+              onClick={() =>
+                onFeedback?.(
                 'Static demo shell',
                 'The footer now has working tabs, but it still represents a simplified IDE and not a full editor.',
                 'info',
               )
             }
-            className="rounded-full p-1 text-gray-500 transition hover:bg-[#161b22] hover:text-white"
-            aria-label="Explain footer status"
-          >
-            <Search className="h-3.5 w-3.5" />
-          </button>
+              className="rounded-full p-1 text-gray-500 transition hover:bg-[#161b22] hover:text-white"
+              aria-label="Explain footer status"
+            >
+              <Info className="h-3.5 w-3.5" />
+            </button>
 
-          <div className={`ml-auto flex items-center gap-2 rounded px-2 py-1 ${footerStatusClass}`}>
+          <div aria-live="polite" className={`ml-auto flex items-center gap-2 rounded px-2 py-1 ${footerStatusClass}`}>
             <div className={`h-2 w-2 rounded-full ${footerDetails.tone === 'success' ? 'bg-green-500' : 'bg-blue-400'}`} />
             {footerDetails.status}
           </div>
