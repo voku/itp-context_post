@@ -19,6 +19,8 @@ const feedbackStyles: Record<FeedbackTone, string> = {
   success: 'border-green-500/40 bg-[#0f1f17] text-green-100',
 };
 
+const FEEDBACK_AUTO_DISMISS_MS = 2600;
+
 export default function App() {
   const [view, setView] = useState<'confluence' | 'context'>('confluence');
   const [feedback, setFeedback] = useState<DemoFeedback | null>(null);
@@ -39,7 +41,7 @@ export default function App() {
 
     const timeout = window.setTimeout(() => {
       setFeedback(null);
-    }, 2600);
+    }, FEEDBACK_AUTO_DISMISS_MS);
 
     return () => window.clearTimeout(timeout);
   }, [feedback]);
