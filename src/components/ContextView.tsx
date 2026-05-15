@@ -109,7 +109,7 @@ export function ContextView({ onFeedback }: ContextViewProps) {
       : 'bg-blue-500/10 text-blue-300';
 
   return (
-    <div className="flex h-full flex-col bg-[#0e1117] font-sans text-[#c9d1d9]">
+    <div className="relative flex h-full flex-col bg-[#0e1117] font-sans text-[#c9d1d9]">
       <div className="relative flex min-h-0 flex-1 overflow-hidden">
         <AnimatePresence>
           {isExplorerOpen && (
@@ -246,16 +246,16 @@ export function ContextView({ onFeedback }: ContextViewProps) {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setActiveRule(null)}
-                className="fixed inset-x-0 top-0 bottom-40 z-30 bg-black/50 sm:bottom-44 md:bottom-48 xl:hidden"
+                className="absolute inset-x-0 top-0 bottom-40 z-30 bg-black/50 sm:bottom-44 md:bottom-48 xl:hidden"
               />
               <motion.div
                 initial={{ y: '100%' }}
                 animate={{ y: 0 }}
                 exit={{ y: '100%' }}
                 transition={{ duration: 0.22 }}
-                className="max-safe-context-panel fixed inset-x-0 bottom-40 z-40 sm:bottom-44 md:bottom-48 xl:hidden"
+                className="pointer-events-none absolute inset-x-0 top-3 bottom-40 z-40 flex items-end px-3 sm:bottom-44 sm:px-4 md:bottom-48 xl:hidden"
               >
-                <div className="mx-auto flex max-h-full w-full max-w-2xl flex-col overflow-hidden rounded-t-2xl border border-gray-700/60 bg-[#161b22] shadow-2xl">
+                <div className="pointer-events-auto mx-auto flex max-h-full w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-gray-700/60 bg-[#161b22] shadow-2xl">
                   <ContextDetailsPanel activeRule={activeRule} onClose={() => setActiveRule(null)} />
                 </div>
               </motion.div>
