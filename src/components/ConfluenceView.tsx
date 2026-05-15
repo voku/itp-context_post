@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { AlertCircle, Clock, Search, ChevronRight, Menu, Home, Book, FileText, Settings, Users } from 'lucide-react';
 import { BlogPostContent } from './BlogPostContent';
 
@@ -157,7 +158,7 @@ export function ConfluenceView({ onSwitch }: { onSwitch?: () => void }) {
   );
 }
 
-function SidebarItem({ icon, label, active, small }: { icon?: React.ReactNode, label: string, active?: boolean, small?: boolean }) {
+function SidebarItem({ icon, label, active, small }: { icon?: ReactNode, label: string, active?: boolean, small?: boolean }) {
   return (
     <div className={`flex items-center gap-2 px-2 py-1.5 rounded cursor-pointer transition-colors ${
       active ? 'bg-[#EBECF0] text-[#0052CC] font-medium' : 'text-[#42526E] hover:bg-gray-100'

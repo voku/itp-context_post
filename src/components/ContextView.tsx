@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { FileCode2, Play, Search, Shield, Info, Terminal, Folder, File, ChevronDown, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -8,6 +8,8 @@ type FileNode = {
   children?: FileNode[];
   contentKey?: keyof typeof fileContents;
 };
+
+type FileContentKey = keyof typeof fileContents;
 
 const fileTree: FileNode[] = [
   {
@@ -40,10 +42,10 @@ const fileContents = {
 };
 
 export function ContextView() {
-  const [activeFile, setActiveFile] = useState<keyof typeof fileContents>('PaymentGateway.php');
+  const [activeFile, setActiveFile] = useState<FileContentKey>('PaymentGateway.php');
   const [activeRule, setActiveRule] = useState<string | null>(null);
 
-  const handleFileChange = (file: keyof typeof fileContents) => {
+  const handleFileChange = (file: FileContentKey) => {
     setActiveFile(file);
     setActiveRule(null);
   };
@@ -319,17 +321,23 @@ function RulesEnumCode({ activeRule, onRuleClick }: { activeRule: string | null,
 }
 
 // Tree view helper
-function Tree({ node, depth, activeFile, onSelect }: { node: FileNode, depth: number, activeFile: string, onSelect: (f: any) => void }) {
+function Tree({ node, depth, activeFile, onSelect }: { node: FileNode, depth: number, activeFile: string, onSelect: (f: FileContentKey) => void }) {
   const [isOpen, setIsOpen] = useState(true);
   
   if (node.type === 'file') {
+    if (!node.contentKey) {
+      return null;
+    }
+
+    const contentKey = node.contentKey;
+
     return (
       <div 
-        onClick={() => onSelect(node.contentKey)}
-        className={`flex items-center gap-1.5 px-2 py-1 cursor-pointer transition-colors ${activeFile === node.contentKey ? 'bg-[#1f6feb]/20 text-[#a5d6ff]' : 'text-gray-400 hover:bg-[#161b22] hover:text-gray-300'}`}
+        onClick={() => onSelect(contentKey)}
+        className={`flex items-center gap-1.5 px-2 py-1 cursor-pointer transition-colors ${activeFile === contentKey ? 'bg-[#1f6feb]/20 text-[#a5d6ff]' : 'text-gray-400 hover:bg-[#161b22] hover:text-gray-300'}`}
         style={{ paddingLeft: `${depth * 12 + 12}px` }}
       >
-        <FileCode2 className={`w-3.5 h-3.5 ${activeFile === node.contentKey ? 'text-[#a5d6ff]' : 'text-gray-500'}`} />
+        <FileCode2 className={`w-3.5 h-3.5 ${activeFile === contentKey ? 'text-[#a5d6ff]' : 'text-gray-500'}`} />
         <span className="text-sm truncate">{node.name}</span>
       </div>
     )
@@ -348,7 +356,11 @@ function Tree({ node, depth, activeFile, onSelect }: { node: FileNode, depth: nu
       </div>
       {isOpen && node.children && (
         <div>
-          {node.children.map(child => <Tree key={child.name} node={child} depth={depth + 1} activeFile={activeFile} onSelect={onSelect} />)}
+          {node.children.map(child => (
+            <Fragment key={child.name}>
+              <Tree node={child} depth={depth + 1} activeFile={activeFile} onSelect={onSelect} />
+            </Fragment>
+          ))}
         </div>
       )}
     </div>

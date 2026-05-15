@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">itp-context_post social preview</title>
+  <desc id="desc">Social preview for the itp-context_post living architecture demo.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#020617" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="panelLeft" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#eff6ff" />
+      <stop offset="100%" stop-color="#dbeafe" />
+    </linearGradient>
+    <linearGradient id="panelRight" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#111827" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#60a5fa" />
+      <stop offset="100%" stop-color="#34d399" />
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <circle cx="1050" cy="120" r="140" fill="#38bdf8" opacity="0.12" />
+  <circle cx="980" cy="510" r="180" fill="#22c55e" opacity="0.08" />
+
+  <text x="84" y="120" fill="#93c5fd" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="4">VITE · REACT · GITHUB PAGES</text>
+  <text x="84" y="220" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="68" font-weight="800">itp-context_post</text>
+  <text x="84" y="288" fill="#cbd5e1" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="500">Interactive demo: stale docs versus living architecture context</text>
+
+  <rect x="84" y="346" width="452" height="212" rx="24" fill="url(#panelLeft)" />
+  <rect x="578" y="346" width="538" height="212" rx="24" fill="url(#panelRight)" stroke="url(#accent)" stroke-width="2" />
+
+  <text x="120" y="398" fill="#1d4ed8" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700">Stale documentation</text>
+  <rect x="120" y="430" width="188" height="18" rx="9" fill="#93c5fd" opacity="0.6" />
+  <rect x="120" y="464" width="258" height="18" rx="9" fill="#cbd5e1" />
+  <rect x="120" y="498" width="208" height="18" rx="9" fill="#cbd5e1" />
+  <rect x="120" y="532" width="160" height="18" rx="9" fill="#f59e0b" opacity="0.6" />
+
+  <text x="616" y="398" fill="#86efac" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700">Living architecture</text>
+  <rect x="616" y="428" width="152" height="24" rx="12" fill="#0b1220" stroke="#34d399" />
+  <text x="636" y="446" fill="#a7f3d0" font-family="ui-monospace, SFMono-Regular, monospace" font-size="16" font-weight="700">#[Rule(...)]</text>
+  <rect x="616" y="474" width="320" height="14" rx="7" fill="#334155" />
+  <rect x="616" y="505" width="410" height="14" rx="7" fill="#60a5fa" opacity="0.75" />
+  <rect x="616" y="536" width="272" height="14" rx="7" fill="#34d399" opacity="0.8" />
+</svg>
