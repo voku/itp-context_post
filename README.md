@@ -1,20 +1,91 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# itp-context_post
 
-# Run and deploy your AI Studio app
+Interactive Vite demo that contrasts stale documentation with living architecture context attached directly to code.
 
-This contains everything you need to run your app locally.
+## Live site
 
-View your app in AI Studio: https://ai.studio/apps/2dbfb499-247c-4ea7-b79c-bfa1d5ad36fc
+https://voku.github.io/itp-context_post/
 
-## Run Locally
+## What this project shows
 
-**Prerequisites:**  Node.js
+- A Confluence-style view that represents outdated documentation
+- A code-first view that resolves architecture rules inline
+- A static, production-ready deployment flow for GitHub Pages
 
+## Requirements
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+- Node.js 22+
+- npm 10+
+
+## Local development
+
+```bash
+npm install
+npm run dev
+```
+
+Open the local URL printed by Vite, usually `http://localhost:3000`.
+
+## Available scripts
+
+- `npm run dev` — start the local development server
+- `npm run lint` — run the TypeScript type check
+- `npm run build` — create the production bundle in `dist/`
+- `npm run preview` — preview the production build locally
+
+## Production deployment
+
+GitHub Pages deployment is automated with `.github/workflows/deploy-pages.yml`.
+
+1. Enable **Settings → Pages → Build and deployment → Source = GitHub Actions**
+2. Push to `main`
+3. The workflow installs dependencies, runs `npm run lint`, builds with Vite, and deploys `dist/`
+
+### Repository-specific Pages settings
+
+This repository is configured for the Pages URL:
+
+```text
+https://voku.github.io/itp-context_post/
+```
+
+If you fork or rename the repository, update both:
+
+- `/home/runner/work/itp-context_post/itp-context_post/vite.config.ts`
+- `/home/runner/work/itp-context_post/itp-context_post/index.html`
+
+## Key files
+
+- `/home/runner/work/itp-context_post/itp-context_post/src/App.tsx` — top-level app shell and view switching
+- `/home/runner/work/itp-context_post/itp-context_post/src/components/ConfluenceView.tsx` — stale documentation experience
+- `/home/runner/work/itp-context_post/itp-context_post/src/components/ContextView.tsx` — living architecture/code context experience
+- `/home/runner/work/itp-context_post/itp-context_post/src/components/BlogPostContent.tsx` — article-style content inside the Confluence mock
+- `/home/runner/work/itp-context_post/itp-context_post/index.html` — favicon, SEO, Open Graph, and social preview metadata
+- `/home/runner/work/itp-context_post/itp-context_post/vite.config.ts` — Vite setup, aliases, and GitHub Pages base path
+- `/home/runner/work/itp-context_post/itp-context_post/.github/workflows/deploy-pages.yml` — automated Pages deployment workflow
+
+## Key Files Detector helper prompt
+
+```text
+You are a Key Files Detector for this repository.
+
+Goal:
+- identify the smallest set of files a contributor should read before changing a feature
+- prioritize files that define the user-facing behavior, core data flow, and deployment path
+- explain why each file matters in one short sentence
+
+When responding:
+- start with the 3 to 7 most important files
+- include exact repository-relative paths
+- group files by purpose when helpful
+- avoid listing generated files or dependencies unless they are directly relevant
+```
+
+## Verification
+
+Before merging changes, run:
+
+```bash
+npm run lint
+npm run build
+```

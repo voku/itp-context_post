@@ -1,6 +1,6 @@
 {
-  "name": "",
-  "description": "",
+  "name": "itp-context_post",
+  "description": "Interactive demo of stale documentation versus living architecture context.",
   "requestFramePermissions": [],
   "majorCapabilities": []
 }

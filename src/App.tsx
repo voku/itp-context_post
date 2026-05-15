@@ -13,7 +13,7 @@ export default function App() {
       <header className="h-14 border-b border-gray-700/50 bg-[#161b22] px-4 flex items-center justify-between shrink-0 z-20">
         <div className="flex items-center gap-3">
           <div className="text-white font-semibold tracking-tight text-lg">
-            voku/itp-context <span className="text-gray-400 font-normal text-sm ml-2">Interactive Guide</span>
+            voku/itp-context_post <span className="text-gray-400 font-normal text-sm ml-2">Interactive Demo</span>
           </div>
         </div>
 
