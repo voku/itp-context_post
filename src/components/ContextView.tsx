@@ -27,7 +27,6 @@ const fileTree: FileNode[] = [
         type: 'folder',
         children: [
           { name: 'ArchitectureRules.php', type: 'file', contentKey: 'ArchitectureRules.php' },
-          { name: 'rule-catalog.php', type: 'file', contentKey: 'rule-catalog.php' },
         ]
       },
       {
@@ -42,8 +41,7 @@ const fileTree: FileNode[] = [
 ];
 
 const fileContents = {
-  'ArchitectureRules.php': `<?php\n\ndeclare(strict_types=1);\n\nnamespace Acme\\Context;\n\nuse ItpContext\\Contract\\RuleIdentifier;\n\nenum ArchitectureRules implements RuleIdentifier\n{\n    case ExternalApiBoundary;\n}`,
-  'rule-catalog.php': `<?php\n\ndeclare(strict_types=1);\n\nnamespace Acme\\Context;\n\nuse ItpContext\\Enum\\Tier;\nuse ItpContext\\Model\\RuleDef;\n\nreturn [\n    'ExternalApiBoundary' => new RuleDef(\n        statement: 'Keep external API communication behind adapter boundaries.',\n        tier: Tier::Required,\n        owner: 'Team-Backend',\n        rationale: 'Domain and application code must not depend on HTTP clients, transport errors, or provider-specific response formats.',\n        verifiedBy: [\n            'tests/Architecture/ExternalApiBoundaryTest.php',\n        ],\n        refs: [\n            'docs/adr/external-api-boundaries.md',\n        ],\n    ),\n];`,
+  'ArchitectureRules.php': `<?php\n\ndeclare(strict_types=1);\n\nnamespace Acme\\Context;\n\nuse Acme\\Tests\\Architecture\\ExternalApiBoundaryTest;\nuse ItpContext\\Contract\\RuleIdentifier;\nuse ItpContext\\Enum\\Tier;\nuse ItpContext\\Model\\RuleDef;\n\nenum ArchitectureRules implements RuleIdentifier\n{\n    case ExternalApiBoundary;\n\n    public function getDefinition(): RuleDef\n    {\n        return match ($this) {\n            self::ExternalApiBoundary => new RuleDef(\n                statement: 'Keep external API communication behind adapter boundaries.',\n                tier: Tier::Required,\n                owner: 'Team-Backend',\n                rationale: 'Domain and application code must not depend on HTTP clients, transport errors, or provider-specific response formats.',\n                verifiedBy: [\n                    ExternalApiBoundaryTest::class,\n                ],\n                refs: [\n                    'docs/adr/external-api-boundaries.md',\n                ],\n            ),\n        };\n    }\n}`,
   'PaymentGateway.php': `<?php\n\ndeclare(strict_types=1);\n\nnamespace Acme\\Payment;\n\nuse Acme\\Context\\ArchitectureRules;\nuse ItpContext\\Attribute\\Rule;\n\n#[Rule(ArchitectureRules::ExternalApiBoundary)]\ninterface PaymentGateway\n{\n    public function authorize(PaymentRequest $request): PaymentResult;\n}`
 };
 
@@ -73,8 +71,8 @@ export function ContextView({ onFeedback }: ContextViewProps) {
           tone: 'success' as const,
           lines: [
             { className: 'text-gray-500', text: 'No unresolved Problems in the current context.' },
-            { className: 'text-[#3fb950]', text: '✓ Rule metadata, enum, and adapter interface are aligned.' },
-            { className: 'text-gray-400', text: 'Tip: open the catalog or enum file to inspect the resolved rule sources.' },
+            { className: 'text-[#3fb950]', text: '✓ Rule metadata, enum definition, and adapter interface are aligned.' },
+            { className: 'text-gray-400', text: 'Tip: open the enum file to inspect the inline RuleDef source.' },
           ],
         };
       case 'output':
@@ -84,7 +82,7 @@ export function ContextView({ onFeedback }: ContextViewProps) {
           lines: [
             { className: 'text-gray-500', text: '> Context resolver booted with inline metadata enabled' },
             { className: 'text-gray-300', text: 'Resolved ArchitectureRules::ExternalApiBoundary from PaymentGateway.php' },
-            { className: 'text-[#79c0ff]', text: 'Expanded rule details from rule-catalog.php and ArchitectureRules.php' },
+            { className: 'text-[#79c0ff]', text: 'Expanded rule details from ArchitectureRules::getDefinition()' },
           ],
         };
       case 'terminal':
@@ -94,10 +92,10 @@ export function ContextView({ onFeedback }: ContextViewProps) {
           tone: 'success' as const,
           lines: [
             { className: 'text-gray-500', text: "$ vendor/bin/itp-context-validate 'Acme\\Context\\ArchitectureRules'" },
-            { className: 'text-gray-300', text: 'Loading catalog from default path...' },
             { className: 'text-gray-300', text: 'Scanning enum Acme\\Context\\ArchitectureRules...' },
+            { className: 'text-gray-300', text: 'Calling getDefinition() on each enum case...' },
             { className: 'text-[#3fb950]', text: '✓ 1 rule validated successfully.' },
-            { className: 'text-[#3fb950]', text: '✓ Catalog and AST are in sync.' },
+            { className: 'text-[#3fb950]', text: '✓ Rule definitions resolved directly from the enum.' },
           ],
         };
     }
@@ -211,9 +209,6 @@ export function ContextView({ onFeedback }: ContextViewProps) {
               >
                 {activeFile === 'PaymentGateway.php' && (
                   <PaymentGatewayCode activeRule={activeRule} onRuleClick={setActiveRule} />
-                )}
-                {activeFile === 'rule-catalog.php' && (
-                  <CatalogCode activeRule={activeRule} onRuleClick={setActiveRule} />
                 )}
                 {activeFile === 'ArchitectureRules.php' && (
                   <RulesEnumCode activeRule={activeRule} onRuleClick={setActiveRule} />
@@ -391,7 +386,7 @@ function ContextDetailsPanel({
           </div>
           <div className="relative rounded-md border border-gray-800 bg-black/50 p-3 font-mono text-xs leading-relaxed text-[#8b9eb5]">
             <div className="absolute bottom-0 left-0 top-0 w-1 rounded-l-md bg-green-500/50" />
-            <strong>Agent:</strong> Found <code>#[Rule]</code> annotation. Checking catalog... Rule is Tier::Required. I will not implement HTTP logic here.
+            <strong>Agent:</strong> Found <code>#[Rule]</code> annotation. Resolving <code>ArchitectureRules::ExternalApiBoundary-&gt;getDefinition()</code>... Rule is Tier::Required. I will not implement HTTP logic here.
           </div>
         </div>
       </div>
@@ -436,41 +431,6 @@ function PaymentGatewayCode({ activeRule, onRuleClick }: { activeRule: string | 
   );
 }
 
-function CatalogCode({ activeRule, onRuleClick }: { activeRule: string | null, onRuleClick: (r: string) => void }) {
-  const isRuleActive = activeRule === 'ExternalApiBoundary';
-  return (
-    <>
-      <span className="text-[#ff7b72]">{'<?php\n\n'}</span>
-      <span className="text-[#ff7b72]">declare</span>(strict_types=<span className="text-[#79c0ff]">1</span>);{'\n\n'}
-      <span className="text-[#ff7b72]">namespace</span> <span className="text-[#d2a8ff]">Acme\Context</span>;{'\n\n'}
-      <span className="text-[#ff7b72]">use</span> <span className="text-[#c9d1d9]">ItpContext\Enum\Tier</span>;{'\n'}
-      <span className="text-[#ff7b72]">use</span> <span className="text-[#c9d1d9]">ItpContext\Model\RuleDef</span>;{'\n\n'}
-      <span className="text-[#ff7b72]">return</span> [{'\n'}
-
-      <div className={`-ml-4 my-1 rounded-r-lg border-l-2 py-2 pl-4 transition-all duration-300 ${isRuleActive ? 'border-blue-500 bg-[#1f6feb]/10 shadow-inner' : 'border-transparent'}`}>
-        {'    '}<button
-          type="button"
-          onClick={() => onRuleClick('ExternalApiBoundary')}
-          className="text-[#a5d6ff] hover:underline"
-        >'ExternalApiBoundary'</button> <span className="text-[#ff7b72]">=&gt; new</span> <span className="text-[#d2a8ff]">RuleDef</span>({'\n'}
-        {'        '}statement: <span className="text-[#a5d6ff]">'Keep external API communication behind adapter boundaries.'</span>,{'\n'}
-        {'        '}tier: <span className="text-[#c9d1d9]">Tier::Required</span>,{'\n'}
-        {'        '}owner: <span className="text-[#a5d6ff]">'Team-Backend'</span>,{'\n'}
-        {'        '}rationale: <span className="text-[#a5d6ff]">'Domain and application code must not depend on HTTP clients, transport errors, or provider-specific response formats.'</span>,{'\n'}
-        {'        '}verifiedBy: [{'\n'}
-        {'            '}<span className="text-[#a5d6ff]">'tests/Architecture/ExternalApiBoundaryTest.php'</span>,{'\n'}
-        {'        '}],{'\n'}
-        {'        '}refs: [{'\n'}
-        {'            '}<span className="text-[#a5d6ff]">'docs/adr/external-api-boundaries.md'</span>,{'\n'}
-        {'        '}],{'\n'}
-        {'    '}),{'\n'}
-      </div>
-
-      ];
-    </>
-  );
-}
-
 function RulesEnumCode({ activeRule, onRuleClick }: { activeRule: string | null, onRuleClick: (r: string) => void }) {
   const isRuleActive = activeRule === 'ExternalApiBoundary';
   return (
@@ -478,7 +438,10 @@ function RulesEnumCode({ activeRule, onRuleClick }: { activeRule: string | null,
       <span className="text-[#ff7b72]">{'<?php\n\n'}</span>
       <span className="text-[#ff7b72]">declare</span>(strict_types=<span className="text-[#79c0ff]">1</span>);{'\n\n'}
       <span className="text-[#ff7b72]">namespace</span> <span className="text-[#d2a8ff]">Acme\Context</span>;{'\n\n'}
-      <span className="text-[#ff7b72]">use</span> <span className="text-[#c9d1d9]">ItpContext\Contract\RuleIdentifier</span>;{'\n\n'}
+      <span className="text-[#ff7b72]">use</span> <span className="text-[#c9d1d9]">Acme\Tests\Architecture\ExternalApiBoundaryTest</span>;{'\n'}
+      <span className="text-[#ff7b72]">use</span> <span className="text-[#c9d1d9]">ItpContext\Contract\RuleIdentifier</span>;{'\n'}
+      <span className="text-[#ff7b72]">use</span> <span className="text-[#c9d1d9]">ItpContext\Enum\Tier</span>;{'\n'}
+      <span className="text-[#ff7b72]">use</span> <span className="text-[#c9d1d9]">ItpContext\Model\RuleDef</span>;{'\n\n'}
       <span className="text-[#ff7b72]">enum</span> <span className="text-[#d2a8ff]">ArchitectureRules</span> <span className="text-[#ff7b72]">implements</span> <span className="text-[#c9d1d9]">RuleIdentifier</span>{'\n'}
       {'{'}{'\n'}
       <div className={`-ml-4 my-1 rounded-r-lg border-l-2 py-1 pl-4 transition-all duration-300 ${isRuleActive ? 'border-blue-500 bg-[#1f6feb]/10 shadow-inner' : 'border-transparent'}`}>
@@ -488,6 +451,32 @@ function RulesEnumCode({ activeRule, onRuleClick }: { activeRule: string | null,
           onClick={() => onRuleClick('ExternalApiBoundary')}
         >ExternalApiBoundary</button>;
       </div>
+      {'\n'}
+      {'    '}<span className="text-[#ff7b72]">public function</span> <span className="text-[#d2a8ff]">getDefinition</span>(): <span className="text-[#c9d1d9]">RuleDef</span>{'\n'}
+      {'    '}{'{'}{'\n'}
+      {'        '}<span className="text-[#ff7b72]">return match</span> (<span className="text-[#ff7b72]">$this</span>) {'{'}{'\n'}
+      <div className={`-ml-4 my-1 rounded-r-lg border-l-2 py-2 pl-4 transition-all duration-300 ${isRuleActive ? 'border-blue-500 bg-[#1f6feb]/10 shadow-inner' : 'border-transparent'}`}>
+        {'            '}<button
+          type="button"
+          onClick={() => onRuleClick('ExternalApiBoundary')}
+          className="text-[#a5d6ff] hover:text-white"
+        >
+          self::ExternalApiBoundary
+        </button> <span className="text-[#ff7b72]">=&gt; new</span> <span className="text-[#d2a8ff]">RuleDef</span>({'\n'}
+        {'                '}statement: <span className="text-[#a5d6ff]">'Keep external API communication behind adapter boundaries.'</span>,{'\n'}
+        {'                '}tier: <span className="text-[#c9d1d9]">Tier::Required</span>,{'\n'}
+        {'                '}owner: <span className="text-[#a5d6ff]">'Team-Backend'</span>,{'\n'}
+        {'                '}rationale: <span className="text-[#a5d6ff]">'Domain and application code must not depend on HTTP clients, transport errors, or provider-specific response formats.'</span>,{'\n'}
+        {'                '}verifiedBy: [{'\n'}
+        {'                    '}<span className="text-[#c9d1d9]">ExternalApiBoundaryTest::class</span>,{'\n'}
+        {'                '}],{'\n'}
+        {'                '}refs: [{'\n'}
+        {'                    '}<span className="text-[#a5d6ff]">'docs/adr/external-api-boundaries.md'</span>,{'\n'}
+        {'                '}],{'\n'}
+        {'            '}),{'\n'}
+      </div>
+      {'        '}{'};'}{'\n'}
+      {'    '}{'}'}{'\n'}
       {'}'}
     </>
   );
