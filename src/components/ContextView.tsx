@@ -56,11 +56,18 @@ export function ContextView({ onFeedback }: ContextViewProps) {
   const [activeRule, setActiveRule] = useState<string | null>(null);
   const [footerTab, setFooterTab] = useState<PanelTab>('terminal');
   const [isExplorerOpen, setIsExplorerOpen] = useState(false);
+  const [isResolveHintVisible, setIsResolveHintVisible] = useState(true);
 
   const handleFileChange = (file: FileContentKey) => {
     setActiveFile(file);
     setActiveRule(null);
     setIsExplorerOpen(false);
+    setIsResolveHintVisible(file === 'PaymentGateway.php');
+  };
+
+  const handleRuleSelect = (rule: string) => {
+    setActiveRule(rule);
+    setIsResolveHintVisible(false);
   };
 
   const footerDetails = useMemo(() => {
@@ -208,25 +215,41 @@ export function ContextView({ onFeedback }: ContextViewProps) {
                 className="font-mono text-[13px] leading-relaxed whitespace-pre md:text-sm"
               >
                 {activeFile === 'PaymentGateway.php' && (
-                  <PaymentGatewayCode activeRule={activeRule} onRuleClick={setActiveRule} />
+                  <PaymentGatewayCode activeRule={activeRule} onRuleClick={handleRuleSelect} />
                 )}
                 {activeFile === 'ArchitectureRules.php' && (
-                  <RulesEnumCode activeRule={activeRule} onRuleClick={setActiveRule} />
+                  <RulesEnumCode activeRule={activeRule} onRuleClick={handleRuleSelect} />
                 )}
               </motion.div>
             </AnimatePresence>
 
-            {activeFile === 'PaymentGateway.php' && !activeRule && (
-              <button
-                type="button"
-                onClick={() => setActiveRule('ExternalApiBoundary')}
-                className="absolute left-1/2 top-1/2 w-[min(90%,24rem)] -translate-x-1/2 -translate-y-1/2 rounded-xl border border-[#30363d] bg-[#1f242c] px-4 py-3 text-left shadow-2xl transition hover:border-[#2f81f7]"
-              >
-                <div className="flex items-center gap-2 font-medium text-blue-400">
-                  <Play className="h-4 w-4 fill-current" />
-                  Click the #[Rule(...)] attribute to resolve context
+            {activeFile === 'PaymentGateway.php' && !activeRule && isResolveHintVisible && (
+              <div className="mb-4 flex items-start justify-between gap-3 rounded-xl border border-[#30363d] bg-[#1f242c] px-4 py-3 text-left shadow-lg">
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2 font-medium text-blue-400">
+                    <Play className="h-4 w-4 fill-current" />
+                    Click the #[Rule(...)] attribute to resolve context
+                  </div>
+                  <p className="mt-1 text-xs text-gray-400">Dismiss this hint to inspect the code without the overlay.</p>
                 </div>
-              </button>
+                <div className="flex shrink-0 items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handleRuleSelect('ExternalApiBoundary')}
+                    className="rounded-md border border-[#2f81f7]/40 px-3 py-1.5 text-xs font-medium text-blue-300 transition hover:bg-[#1f6feb]/20 hover:text-white"
+                  >
+                    Resolve now
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsResolveHintVisible(false)}
+                    className="rounded-md p-1.5 text-gray-400 transition hover:bg-[#161b22] hover:text-white"
+                    aria-label="Dismiss resolve context hint"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
             )}
           </div>
         </div>
